@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34607.119
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pajutrao-Project", "Pajutrao-Project\Pajutrao-Project.csproj", "{DFF467CC-355D-4979-969D-56B2D1EED846}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DFF467CC-355D-4979-969D-56B2D1EED846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFF467CC-355D-4979-969D-56B2D1EED846}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFF467CC-355D-4979-969D-56B2D1EED846}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFF467CC-355D-4979-969D-56B2D1EED846}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F1C8DF3B-E86B-485B-819B-5F7BFEA6BB06}
+	EndGlobalSection
+EndGlobal
