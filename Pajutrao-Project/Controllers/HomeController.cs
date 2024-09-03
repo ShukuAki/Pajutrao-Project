@@ -18,6 +18,12 @@ namespace Pajutrao_Project.Controllers
             return View();
         }
 
+        public IActionResult LoD()
+        {
+
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
