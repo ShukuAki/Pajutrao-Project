@@ -24,6 +24,17 @@ namespace Pajutrao_Project.Controllers
             return View();
         }
 
+        public IActionResult Logistics()
+        {
+
+            return View();
+        }
+        
+        public IActionResult Database()
+        {
+
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
