@@ -35,6 +35,11 @@ namespace Pajutrao_Project.Controllers
 
             return View();
         }
+        public IActionResult Canvas()
+        {
+
+            return View();
+        }
         public IActionResult Privacy()
         {
             return View();
