@@ -120,31 +120,31 @@
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
                                     <a href="@Url.Action("Index", "Home")" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="far fa-circle nav-icon" id="index-icon"></i>
                                         <p>Summary Overview</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="@Url.Action("LoD", "Home")" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="far fa-circle nav-icon" id="fda-icon"></i>
                                         <p>FDA</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="@Url.Action("Logistics", "Home")" class="nav-link active">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="far fa-circle nav-icon" id="logistics-icon"></i>
                                         <p>Logistics</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="@Url.Action("Database", "Home")" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="far fa-circle nav-icon" id="finance-icon"></i>
                                         <p>Database / Finance, Inventory & Transmittals</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="@Url.Action("Canvas", "Home")" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
+                                        <i class="far fa-circle nav-icon" id="canvas-icon"></i>
                                         <p>Canvas</p>
                                     </a>
                                 </li>
@@ -221,5 +221,97 @@
 
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="~/dist/js/pages/dashboard.js"></script>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+                fetch('/api/updateLogistics', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify({ isLoD: true })
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('LoD updated:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch the UFda status when the page loads
+            fetch('@Url.Action("GetLoDStatus", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    const iconElement = document.getElementById('fda-icon');
+                    if (data.isLoD) {
+                        iconElement.classList.remove('far');
+                        iconElement.classList.add('fas', 'fa-check-circle', 'text-success');
+                    } else {
+                        iconElement.classList.remove('fas', 'fa-check-circle', 'text-success');
+                        iconElement.classList.add('far', 'fa-circle');
+                    }
+                })
+                .catch(error => console.error('Error fetching LoD status:', error));
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch the UCanv status when the page loads
+            fetch('@Url.Action("GetCanvasStatus", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    const iconElement = document.getElementById('canvas-icon');
+                    if (data.isCanv) {
+                        iconElement.classList.remove('far');
+                        iconElement.classList.add('fas', 'fa-check-circle', 'text-success');
+                    } else {
+                        iconElement.classList.remove('fas', 'fa-check-circle', 'text-success');
+                        iconElement.classList.add('far', 'fa-circle');
+                    }
+                })
+                .catch(error => console.error('Error fetching Canvas status:', error));
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch the ULog status when the page loads
+            fetch('@Url.Action("GetLogisticsStatus", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    const iconElement = document.getElementById('logistics-icon');
+                    if (data.isLog) {
+                        iconElement.classList.remove('far');
+                        iconElement.classList.add('fas', 'fa-check-circle', 'text-success');
+                    } else {
+                        iconElement.classList.remove('fas', 'fa-check-circle', 'text-success');
+                        iconElement.classList.add('far', 'fa-circle');
+                    }
+                })
+                .catch(error => console.error('Error fetching Logistics status:', error));
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch the ULog status when the page loads
+            fetch('@Url.Action("GetDatabaseStatus", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    const iconElement = document.getElementById('database-icon');
+                    if (data.isLog) {
+                        iconElement.classList.remove('far');
+                        iconElement.classList.add('fas', 'fa-check-circle', 'text-success');
+                    } else {
+                        iconElement.classList.remove('fas', 'fa-check-circle', 'text-success');
+                        iconElement.classList.add('far', 'fa-circle');
+                    }
+                })
+                .catch(error => console.error('Error fetching Database status:', error));
+        });
+    </script>
+
+
 </body>
 </html>

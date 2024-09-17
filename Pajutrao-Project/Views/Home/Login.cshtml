@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        .login-container {
+            background: #007bff; /* Blue background color */
+            color: white; /* White text color */
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+            .login-container h2 {
+                margin-bottom: 1rem;
+                font-size: 1.5rem;
+            }
+
+            .login-container label {
+                display: block;
+                margin-bottom: 0.5rem;
+                font-weight: bold;
+            }
+
+            .login-container input {
+                width: 100%;
+                padding: 0.5rem;
+                margin-bottom: 1rem;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+                background: white; /* White background for input fields */
+                color: black; /* Black text color for input fields */
+            }
+
+            .login-container button {
+                width: 100%;
+                padding: 0.5rem;
+                border: none;
+                border-radius: 4px;
+                background-color: #0056b3; /* Darker blue for button */
+                color: white;
+                font-size: 1rem;
+                cursor: pointer;
+            }
+
+                .login-container button:hover {
+                    background-color: #003d7a; /* Even darker blue for hover effect */
+                }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="loginForm" method="post" action="/Home/Login">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+        <div id="message" style="margin-top: 1rem;"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#loginForm').submit(function (event) {
+                event.preventDefault(); // Prevent default form submission
+
+                var username = $('#username').val();
+                var password = $('#password').val();
+
+                $.ajax({
+                    url: $(this).attr('action'), // Use the form's action attribute for the URL
+                    type: 'POST',
+                    data: {
+                        username: username,
+                        password: password
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            // Redirect to the specified URL
+                            window.location.href = response.redirectUrl;
+                        } else {
+                            toastr.error(response.message); // Show failure message using Toastr
+                        }
+                    },
+                    error: function () {
+                        toastr.error('An error occurred while processing your request.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
