@@ -7,6 +7,8 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 
 namespace Pajutrao_Project.Controllers
@@ -21,6 +23,18 @@ namespace Pajutrao_Project.Controllers
             _userService = userService;
         }
 
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+
+            // Get the username from the authenticated user
+            var username = User.Identity.Name;
+
+            if (!string.IsNullOrEmpty(username))
+            {
+                ViewBag.Username = username; // Make the logged-in user's name available to all views
+            }
+        }
 
         [HttpGet]
         public IActionResult Login()
@@ -303,6 +317,77 @@ namespace Pajutrao_Project.Controllers
         {
 
             return View();
+        }
+        [Authorize]
+        public IActionResult Quiz()
+        {
+
+            // Get the username from the authenticated user
+            var username = User.Identity.Name;
+
+            using (var context = new FourtifyContext())
+            {
+                // Retrieve the user's account number based on their username
+                var account = context.Accounts.FirstOrDefault(a => a.AccName == username);
+                if (account == null)
+                {
+                    // Handle error if the account is not found
+                    return RedirectToAction("Error");
+                }
+
+                // Retrieve the highest quiz score for the user
+                var bestScore = context.QuizScores
+                    .Where(q => q.AccountNo == account.AccNo && q.Score != null)
+                    .OrderByDescending(q => Convert.ToInt32(q.Score))  // Convert the string score to an integer for comparison
+                    .FirstOrDefault()?.Score ?? "0"; // Default to "0" if no score is found
+
+                // Pass the best score to the view
+                ViewBag.BestScore = bestScore;
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult SubmitQuiz([FromBody] QuizSubmission submission)
+        {
+            // Get the username from the authenticated user
+            var username = User.Identity.Name;
+
+            using (var context = new FourtifyContext())
+            {
+                // Retrieve the user's account number based on their username
+                var account = context.Accounts.FirstOrDefault(a => a.AccName == username);
+                if (account == null)
+                {
+                    return Json(new { success = false, message = "User not found." });
+                }
+
+                // Find the latest QuizNo from the QuizScores table
+                var lastQuizScore = context.QuizScores.OrderByDescending(q => q.QuizNo).FirstOrDefault();
+                int newQuizNo = (lastQuizScore != null) ? lastQuizScore.QuizNo + 1 : 1; // Increment or start from 1
+
+                // Save the score to the database
+                var quizScore = new QuizScore
+                {
+                    QuizNo = newQuizNo,
+                    AccountNo = account.AccNo, // Get the account number
+                    Score = submission.Score.ToString(),
+                    DateTimeTaken = DateTime.Now
+                };
+
+                context.QuizScores.Add(quizScore);
+                context.SaveChanges(); // Ensure changes are saved to the database
+            }
+
+            // Return the score as JSON
+            return Json(new { success = true, score = submission.Score });
+        }
+
+
+        public class QuizSubmission
+        {
+            public int Score { get; set; }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

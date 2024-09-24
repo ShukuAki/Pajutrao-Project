@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
+    <title>Fourtify</title>
 
 
     <!-- Google Font: Source Sans Pro -->
@@ -62,7 +62,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-      <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      
       <span class="brand-text font-weight-light"> TMPS </span>
     </a>
 
@@ -70,11 +70,8 @@
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-        <div class="image">
-          <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
-        </div>
         <div class="info">
-          <a href="#" class="d-block">Danielle Pajutrao</a>
+                        <a href="#" class="d-block">@ViewBag.Username</a>
         </div>
       </div>
 
@@ -132,6 +129,12 @@
                     <a href="@Url.Action("Canvas", "Home")" class="nav-link">
                         <i class="far fa-circle nav-icon" id="canvas-icon"></i>
                         <p>Canvas</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="@Url.Action("Quiz", "Home")" class="nav-link ">
+                        <i class="far fa-circle nav-icon" id="canvas-icon"></i>
+                        <p>Quiz</p>
                     </a>
                 </li>
             </ul>

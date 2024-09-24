@@ -1,0 +1,684 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fourtify</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow-x: hidden;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: scroll;
+            position: relative; /* Necessary for sliding panel */
+        }
+
+            .content-wrapper img {
+                width: 80%;
+                height: auto;
+            }
+
+        .quiz-home-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+            margin: 0 auto;
+            margin-top: 100px;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .info {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+            .info p {
+                margin: 10px 0;
+            }
+
+        .start-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+
+            .start-btn:hover {
+                background-color: #45a049;
+            }
+
+        .quiz-panel {
+            position: fixed;
+            top: 0;
+            right: -85%;
+            width: 85%;
+            height: 100%;
+            background-color: #f9f9f9;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+            transition: transform 0.5s ease-in-out;
+            padding: 20px;
+            overflow-y: auto;
+            z-index: 1000;
+            margin-top: 40px; /* Top margin of 10px */
+        }
+
+            .quiz-panel.open {
+                transform: translateX(-100%);
+            }
+
+        .quiz-items {
+            list-style-type: none;
+            padding: 0;
+        }
+
+            .quiz-items li {
+                padding: 15px;
+                background-color: #fff;
+                margin-bottom: 10px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
+
+                .quiz-items li:hover {
+                    background-color: #e0e0e0;
+                }
+
+        .choices {
+            margin-top: 10px;
+        }
+
+        .choice {
+            background-color: #eee;
+            padding: 10px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+            .choice:hover {
+                background-color: #ccc;
+            }
+
+        .close-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            float: right;
+        }
+
+            .close-btn:hover {
+                background-color: #d32f2f;
+            }
+
+        .submit-btn {
+            background-color: #008CBA;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            display: block;
+            margin: 30px auto;
+        }
+
+            .submit-btn:hover {
+                background-color: #007bb5;
+            }
+    </style>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="~/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/plugins/jqvmap/jqvmap.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/plugins/summernote/summernote-bs4.min.css">
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        <!-- Preloader -->
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+        </div>
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="index3.html" class="nav-link">Home</a>
+                </li>
+            </ul>
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Navbar Search -->
+                <li class="nav-item">
+                    <a href="@Url.Action("Logout", "Home")" class="btn btn-block btn-danger">
+                        Logout
+                    </a>
+                </li>
+            </ul>
+
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="index3.html" class="brand-link">
+              
+                <span class="brand-text font-weight-light"> TMPS </span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    
+                    <div class="info">
+                        <a href="#" class="d-block">@ViewBag.Username</a>
+                    </div>
+                </div>
+
+                <!-- SidebarSearch Form -->
+                <div class="form-inline">
+                    <div class="input-group" data-widget="sidebar-search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-sidebar">
+                                <i class="fas fa-search fa-fw"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class
+                             with font-awesome or any other icon font library -->
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Dashboard
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Index", "Home")" class="nav-link">
+                                        <i class="far fa-circle nav-icon" id="index-icon"></i>
+                                        <p>Summary Overview</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("LoD", "Home")" class="nav-link">
+                                        <i class="far fa-circle nav-icon" id="fda-icon"></i>
+                                        <p>FDA</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Logistics", "Home")" class="nav-link">
+                                        <i class="far fa-circle nav-icon" id="logistics-icon"></i>
+                                        <p>Logistics</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Database", "Home")" class="nav-link">
+                                        <i class="far fa-circle nav-icon" id="finance-icon"></i>
+                                        <p>Database / Finance, Inventory & Transmittals</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Canvas", "Home")" class="nav-link">
+                                        <i class="far fa-circle nav-icon" id="canvas-icon"></i>
+                                        <p>Canvas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="@Url.Action("Quiz", "Home")" class="nav-link active">
+                                        <i class="far fa-circle nav-icon" id="canvas-icon"></i>
+                                        <p>Quiz</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+
+        <!--Content here -->
+        <div class="content-wrapper">
+            <!-- Quiz Home Screen -->
+            <div class="quiz-home-container">
+                <h1>Welcome to the Quiz!</h1>
+                <div class="info">
+                    <p><strong>Items Available:</strong> 10</p>
+                    <p><strong>Current Score:</strong> @ViewBag.BestScore</p> <!-- Show user's best score -->
+                </div>
+                <button class="start-btn" onclick="startQuiz()">Start Quiz</button>
+            </div>
+
+
+            <!-- Sliding Quiz Panel -->
+            <div id="quizPanel" class="quiz-panel">
+                <button class="close-btn" onclick="closeQuizPanel()">Close</button>
+                <h2>Quiz Items</h2>
+                <ul class="quiz-items">
+                    <li>
+                        <strong>Question 1:</strong> Which is not part of Daily task tracking and FDA CPR Monitoring
+                        <div class="choices">
+                            <div class="choice">
+                                <label>
+                                    <input type="radio" name="answers[0]" value="0" required />
+                                A. Update the status of every case number whenever there is a case number movement
+                                status based on FDA CPR MONITORING [MASTER] file.
+                                </label>
+                            </div>
+                            <div class="choice">
+                                <label>
+                                    <input type="radio" name="answers[0]" value="1" required />
+                                B. If there is a Letter of Denial (LOD) for a case number, highlight it in red to indicate the
+                                case is denied.
+                                </label>
+                            </div>
+                            <div class="choice">
+                                <label>
+                                    <input type="radio" name="answers[0]" value="2" required />
+                                C. If there is “For Payment” and “Denied” Status from the FDA MONITORING sheet, check the
+                                “FDA” folder (GDrive > Starred > 006 - Intern Prod Folder > R&D and Logistics > FDA). Ms. Jess
+                                will upload documents for you to rename and organize into their designated folders.
+                                </label>
+                            </div>
+                            <div class="choice">
+                                <label>
+                                    <input type="radio" name="answers[0]" value="3" required />
+                                    D. If there are clients that accept online payment, process through the supervisor for further details.
+                                </label>
+                            </div> <!-- Correct -->
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Question 2:</strong> Sometimes a product will receive a valid CPR but it may contain remarks that need to be addressed
+                        through amendment before it can proceed to the next Renewal phase.</br> <strong>True or False</strong>
+                        <div class="choices">
+                            <div class="choice"><label><input type="radio" name="answers[1]" value="0" required />
+                                True
+                            </label>
+                            </div> <!-- Correct -->
+                            <div class="choice"><label><input type="radio" name="answers[1]" value="1" required />
+                                False
+                            </label>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Question 3:</strong>Ensure the reference No. on the 7/11 receipt matches the Reference No. you
+                        wrote down on the Order of Payment. Scan the printed receipt (from 7/11)
+                        together with the printed Order of Payment and save it as a PDF.</br> <strong>True or False</strong>
+                        <div class="choices">
+                            <div class="choice"><label><input type="radio" name="answers[2]" value="0" required />True</label></div> <!-- Correct -->
+                            <div class="choice"><label><input type="radio" name="answers[2]" value="1" required />False</label></div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Question 4:</strong> For follow ups on the case number, take note of the timeline period of each status before you call or
+                        email..</br> <strong>Which of the following has the wrong timeline for the Application Process</strong>
+                        <div class="choices">
+                            <div class="choice"><label><input type="radio" name="answers[3]" value="0" required />
+                                A. Pre-Assessment 7 Working Days
+                            </label>
+                            </div>
+                            <div class="choice"><label><input type="radio" name="answers[3]" value="1" required />B. Payment Verification 2-3 Working Days</label></div>
+                            <div class="choice"><label><input type="radio" name="answers[3]" value="2" required />C. Evaluation 4 Working Days</label></div> <!-- Correct -->
+                            <div class="choice"><label><input type="radio" name="answers[3]" value="3" required />D. Checking 7 Working Days</label></div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Question 5:</strong> Once that the FDA has the final response and your supervisor has acknowledged it to
+                        close the email thread, Follow-up on further instructions upon transacting with the client
+                        </br> <strong>True or False</strong>
+                        <div class="choices">
+                            <div class="choice"><label><input type="radio" name="answers[4]" value="0" required /> True</label></div> 
+                            <div class="choice"><label><input type="radio" name="answers[4]" value="1" required /> False</label></div> <!-- Correct -->
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Question 6:</strong> For the Nutrition Info and Product Artwork, you will create a table in a new page and list down the
+                        Information based on a translated picture but make sure the wording and the numbers are
+                        concise and accurate.
+                        </br> <strong>True or False</strong>
+                        <div class="choices">
+                            <div class="choice"><label><input type="radio" name="answers[5]" value="0" required /> True</label></div><!-- Correct -->
+                            <div class="choice"><label><input type="radio" name="answers[5]" value="1" required /> False</label></div> 
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Question 7:</strong> If there were missing fields or wrong information, ask your supervisor regarding the product
+                        missing or wrong documentation. By creating a powerpoint and highlighting the mistakes from the
+                        product documentation, your supervisor can identify it and submit it to the brand company
+                        requesting revisions.
+                        </br> <strong>True or False</strong>
+                        <div class="choices">
+                            <div class="choice"><label><input type="radio" name="answers[6]" value="0" required />True</label></div><!-- Correct -->
+                            <div class="choice"><label><input type="radio" name="answers[6]" value="1" required />False</label></div> 
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Question 8:</strong> When putting inputs on the Product Sample Sheet, make sure to fill out necessary informations below:
+                        </br><strong>
+                            Pick out the Information that does not belong:
+                        </strong>
+                        <div class="choices">
+                            <div class="choice"><label><input type="radio" name="answers[7]" value="0" required />A. Category</label></div>
+                            <div class="choice"><label><input type="radio" name="answers[7]" value="1" required />B. Brand</label></div>
+                            <div class="choice"><label><input type="radio" name="answers[7]" value="2" required />C. Name</label></div> <!-- Correct -->
+                            <div class="choice"><label><input type="radio" name="answers[7]" value="3" required />D. Product Name</label></div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Question 9:</strong> When handling Telegraphic Transactions (TT), you must be careful in doing this in a process which
+                        requires a good handwriting skill and must match the information from the documents.
+                        </br><strong>
+                            Pick out the step that does not belong:
+                        </strong>
+                        <div class="choices">
+                            <div class="choice">
+                                <label><input type="radio" name="answers[8]" value="0" required />
+                                    A. Bring the Fast book alongside with the processed Telegraphic Transactions to the metrobank
+                                    after compiling the Telegraphic Transactions in your office. (Ground floor near MPT suite).
+                                </label>
+                            </div>
+                            <div class="choice">
+                                <label><input type="radio" name="answers[8]" value="1" required />
+                                    B. Submit it to the bank officer at the office desk and ask them to process the transaction from the
+                                    Telegraphic Transactions or before that, ask our finance officer if the fast book needs to be
+                                    updated in order to get the updated rates.
+                                </label>
+                            </div>
+                            <div class="choice">
+                                <label><input type="radio" name="answers[8]" value="2" required />
+                                    C.  Wait for several minutes and the bank officer will give you back the copy of TT and the fastbook
+                                    as well.
+                                </label>
+                            </div>
+                            <div class="choice">
+                                <label><input type="radio" name="answers[8]" value="3" required />
+                                    D. Go to the bank to fix transactions for the client and the company. 
+                                </label>
+                            </div> <!-- Correct -->
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Question 10:</strong> Whenever you get the ideal product from the supervisor, what information must be included?
+
+                        <div class="choices">
+                            <div class="choice"><label><input type="radio" name="answers[9]" value="0" required />A. Category, brand, Product Name, ....</label></div> <!-- Correct -->
+                            <div class="choice"><label><input type="radio" name="answers[9]" value="1" required />B. Name, Address, Age, Sex, ....</label></div>
+                            <div class="choice"><label><input type="radio" name="answers[9]" value="2" required />C. Product Address, Supplier Name, House Delivery, ....</label></div>
+                            <div class="choice"><label><input type="radio" name="answers[9]" value="3" required />D. Name, Age, Sex, Language, ....</label></div>
+                        </div>
+                    </li>
+                    <!-- Add more questions similarly -->
+
+                </ul>
+
+                <button class="submit-btn" onclick="submitQuiz()">Submit</button>
+            </div>
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- /.content-wrapper -->
+        <footer class="main-footer">
+            <strong>Test Footer 2024</a>.</strong>
+            All rights reserved.
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 3.2.0
+            </div>
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <script src="~/plugins/sparklines/sparkline.js"></script>
+    <!-- JQVMap -->
+    <script src="~/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="~/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/plugins/moment/moment.min.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="~/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.js"></script>
+
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="~/dist/js/pages/dashboard.js"></script>
+
+
+    <script>
+        // window.addEventListener('scroll', () => {
+        //     if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+        //         fetch('/api/updateCanvas', {
+        //             method: 'POST',
+        //             headers: {
+        //                 'Content-Type': 'application/json',
+        //                 'X-Requested-With': 'XMLHttpRequest'
+        //             },
+        //             body: JSON.stringify({ isLoD: true })
+        //         })
+        //             .then(response => response.json())
+        //             .then(data => {
+        //                 console.log('Canvas updated:', data);
+        //             })
+        //             .catch(error => {
+        //                 console.error('Error:', error);
+        //             });
+        //     }
+        // });
+        function clearRadioButtons() {
+            const allRadioButtons = document.querySelectorAll('input[type="radio"]');
+            allRadioButtons.forEach(radio => {
+                radio.checked = false;
+            });
+        }
+
+        // Close the quiz panel (implement your own closing logic here)
+        function closeQuizPanel() {
+            const quizPanel = document.getElementById('quizPanel'); // Replace with your actual quiz panel ID
+            if (quizPanel) {
+                quizPanel.style.display = 'none'; // Or any other method to hide the panel
+            }
+        }
+
+        function startQuiz() {
+            const quizPanel = document.getElementById('quizPanel');
+            quizPanel.style.transform = "translateX(-100%)";  // Slide in from right
+        }
+
+        function closeQuizPanel() {
+            const quizPanel = document.getElementById('quizPanel');
+            quizPanel.style.transform = "translateX(0)";  // Slide out to right
+        }
+        function submitQuiz() {
+            // Correct answers (using the same indices as the radio inputs)
+            const correctAnswers = [3, 0, 0, 2, 1, 0, 0, 2, 3, 0]; // Correct indices
+
+            // Get all the selected answers
+            const answers = document.querySelectorAll('input[type="radio"]:checked');
+
+            let score = 0;
+
+            // Loop through each question and check the answers
+            for (let i = 0; i < correctAnswers.length; i++) {
+                const selectedAnswer = document.querySelector(`input[name="answers[${i}]"]:checked`);
+                if (selectedAnswer && parseInt(selectedAnswer.value) === correctAnswers[i]) {
+                    score++;
+                }
+            }
+
+            // Send score to the controller using AJAX
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "/Home/SubmitQuiz", true); // Adjust the URL based on your routing
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    // Optionally handle success response
+                    const result = JSON.parse(xhr.responseText);
+                    alert("Your score: " + result.score);
+
+                    clearRadioButtons();
+                    closeQuizPanel();
+                } else {
+                    // Optionally handle error
+                    alert("Error submitting quiz.");
+                }
+            };
+
+            xhr.send(JSON.stringify({ score: score }));
+        }
+
+
+
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch the UFda status when the page loads
+            fetch('@Url.Action("GetLoDStatus", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    const iconElement = document.getElementById('fda-icon');
+                    if (data.isLoD) {
+                        iconElement.classList.remove('far');
+                        iconElement.classList.add('fas', 'fa-check-circle', 'text-success');
+                    } else {
+                        iconElement.classList.remove('fas', 'fa-check-circle', 'text-success');
+                        iconElement.classList.add('far', 'fa-circle');
+                    }
+                })
+                .catch(error => console.error('Error fetching LoD status:', error));
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch the UCanv status when the page loads
+            fetch('@Url.Action("GetCanvasStatus", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    const iconElement = document.getElementById('canvas-icon');
+                    if (data.isCanv) {
+                        iconElement.classList.remove('far');
+                        iconElement.classList.add('fas', 'fa-check-circle', 'text-success');
+                    } else {
+                        iconElement.classList.remove('fas', 'fa-check-circle', 'text-success');
+                        iconElement.classList.add('far', 'fa-circle');
+                    }
+                })
+                .catch(error => console.error('Error fetching Canvas status:', error));
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch the ULog status when the page loads
+            fetch('@Url.Action("GetLogisticsStatus", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    const iconElement = document.getElementById('logistics-icon');
+                    if (data.isLog) {
+                        iconElement.classList.remove('far');
+                        iconElement.classList.add('fas', 'fa-check-circle', 'text-success');
+                    } else {
+                        iconElement.classList.remove('fas', 'fa-check-circle', 'text-success');
+                        iconElement.classList.add('far', 'fa-circle');
+                    }
+                })
+                .catch(error => console.error('Error fetching Logistics status:', error));
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fetch the ULog status when the page loads
+            fetch('@Url.Action("GetDatabaseStatus", "Home")')
+                .then(response => response.json())
+                .then(data => {
+                    const iconElement = document.getElementById('database-icon');
+                    if (data.isLog) {
+                        iconElement.classList.remove('far');
+                        iconElement.classList.add('fas', 'fa-check-circle', 'text-success');
+                    } else {
+                        iconElement.classList.remove('fas', 'fa-check-circle', 'text-success');
+                        iconElement.classList.add('far', 'fa-circle');
+                    }
+                })
+                .catch(error => console.error('Error fetching Database status:', error));
+        });
+    </script>
+</body>
+</html>
